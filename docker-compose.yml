@@ -1,0 +1,50 @@
+services:
+  django-app:
+    container_name: django-app
+    image: back-despesas:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      tags:
+        - back-despesas:0.1.0
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - ENV=staging
+      - DB_HOST=database
+    ports:
+      - 8000:8000
+    depends_on:
+      database:
+        condition: service_healthy
+        restart: true
+
+  database:
+    image: postgres:16.3-alpine3.20
+    container_name: database
+    shm_size: 128mb
+    ports:
+      - 5432:5432
+    environment:
+      # for demo purposes only
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: despesas
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_interval: 10s
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+
+volumes:
+  db_data:

@@ -5,6 +5,6 @@ from .despesas import DespesasView
 router = DefaultRouter()
 
 # register your views
-router.register(r'despesas', DespesasView, basename='teste')
+router.register(r'despesas', DespesasView, basename='despesas')
 
 urlpatterns = router.urls

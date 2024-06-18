@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
 
-# TODO: use gunicorn
-# gunicorn project.wsgi
-python manage.py runserver $GUNICORN_HOST:$GUNICORN_PORT
+gunicorn --workers 2 --bind $GUNICORN_HOST:$GUNICORN_PORT project.wsgi
+# python manage.py runserver $GUNICORN_HOST:$GUNICORN_PORT

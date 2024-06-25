@@ -8,11 +8,11 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 
-USER app
-
-COPY --chown=app:app entrypoint.sh .
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
 COPY manage.py .
 COPY project/ project/
+COPY api/ api/
 
 ENTRYPOINT ["./entrypoint.sh"]
